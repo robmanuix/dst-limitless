@@ -6,7 +6,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   <div class="hero">
     <div class="hero-glow"></div>
 
-    <div class="hero-badge">LL</div>
+    <div class="hero-badge"><img src={`${base}/isologo-serenza.png`} alt="Serenza" /></div>
 
     <h1 class="hero-title">Sistema de Diseño</h1>
     <p class="hero-sub">La guía completa de tokens, componentes y patrones de interfaz de LIMITLESS by Serenza.</p>
@@ -74,7 +74,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     width: 72px;
     height: 72px;
     border-radius: 20px;
-    background: linear-gradient(145deg, #fead77 0%, #653024 100%);
+    background: linear-gradient(145deg, #8a4a33 0%, #3a1710 100%);
     color: #fff;
     font-size: 22px;
     font-weight: 700;
@@ -86,6 +86,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     position: relative;
     box-shadow: 0 8px 32px rgba(254,173,119,0.35);
   }
+
+  .hero-badge img { height: 42px; width: auto; display: block; }
 
   .hero-title {
     font-family: 'Montserrat', system-ui, sans-serif;
