@@ -8,13 +8,29 @@ const subNav = [
   { label: 'Notificaciones',  href: '/components/notifications', id: 'notifications' },
 ];
 
+const sharedIcons = [
+  { key: 'plus',     title: 'Más',       svg: '<svg width="18" height="18" viewBox="0 0 14 14" fill="none"><path d="M7 2V12M2 7H12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>' },
+  { key: 'check',    title: 'Confirmar', svg: '<svg width="18" height="18" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>' },
+  { key: 'download', title: 'Descargar', svg: '<svg width="18" height="18" viewBox="0 0 14 14" fill="none"><path d="M7 2V9M4 7L7 10L10 7M2 12H12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>' },
+  { key: 'upload',   title: 'Subir',     svg: '<svg width="18" height="18" viewBox="0 0 14 14" fill="none"><path d="M7 9V2M4 4L7 1L10 4M2 12H12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>' },
+];
+const leftIcons = [
+  { key: 'arrow-left',  title: 'Flecha izq.', svg: '<svg width="18" height="18" viewBox="0 0 14 14" fill="none"><path d="M12 7H2M2 7L6 3M2 7L6 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>' },
+  ...sharedIcons,
+];
+const rightIcons = [
+  { key: 'arrow-right', title: 'Flecha der.', svg: '<svg width="18" height="18" viewBox="0 0 14 14" fill="none"><path d="M2 7H12M12 7L8 3M12 7L8 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>' },
+  ...sharedIcons,
+];
+
 const cssCode = `.cta {
   display: inline-flex; align-items: center; justify-content: center;
   width: 100%; max-width: 320px; height: 56px; padding: 0 24px;
   border: none; border-radius: 999px; cursor: pointer;
-  font-family: 'Montserrat', system-ui, sans-serif; font-size: 14px; font-weight: 500;
+  gap: 8px; font-family: 'Montserrat', system-ui, sans-serif; font-size: 14px; font-weight: 500;
   transition: opacity .15s, filter .15s; white-space: nowrap;
 }
+.cta svg { flex-shrink: 0; }
 .cta:disabled { opacity: .45; cursor: not-allowed; }
 .cta:hover:not(:disabled) { filter: brightness(.96); }
 /* Variantes */
@@ -46,6 +62,36 @@ const cssCode = `.cta {
         <input class="prop-input" id="p-label" type="text" value="Continuar" />
       </div>
 
+      <div class="prop-group">
+        <div class="prop-inline">
+          <span class="prop-label">Ícono izquierdo</span>
+          <label class="ctrl-toggle">
+            <input type="checkbox" id="p-icon-left-show" />
+            <span class="ctrl-track"></span>
+          </label>
+        </div>
+        <div id="p-icon-left-picker" class="icon-picker" style="display:none">
+          {leftIcons.map((ic, i) => (
+            <button class:list={['icon-pill', { active: i === 0 }]} data-key={ic.key} title={ic.title} set:html={ic.svg} />
+          ))}
+        </div>
+      </div>
+
+      <div class="prop-group">
+        <div class="prop-inline">
+          <span class="prop-label">Ícono derecho</span>
+          <label class="ctrl-toggle">
+            <input type="checkbox" id="p-icon-right-show" />
+            <span class="ctrl-track"></span>
+          </label>
+        </div>
+        <div id="p-icon-right-picker" class="icon-picker" style="display:none">
+          {rightIcons.map((ic, i) => (
+            <button class:list={['icon-pill', { active: i === 0 }]} data-key={ic.key} title={ic.title} set:html={ic.svg} />
+          ))}
+        </div>
+      </div>
+
       <div class="prop-group prop-row">
         <span class="prop-label">Deshabilitado</span>
         <label class="ctrl-toggle">
@@ -66,6 +112,8 @@ const cssCode = `.cta {
     <tbody>
       <tr><td>Variant</td><td>Free · Premium · Success · Secondary</td><td>Free</td></tr>
       <tr><td>Texto</td><td>String</td><td>Continuar</td></tr>
+      <tr><td>Ícono izquierdo</td><td>Sin ícono · Flecha izq. · Más · Confirmar · Descargar · Subir</td><td>Sin ícono</td></tr>
+      <tr><td>Ícono derecho</td><td>Sin ícono · Flecha der. · Más · Confirmar · Descargar · Subir</td><td>Sin ícono</td></tr>
     </tbody>
   </table>
 
@@ -95,7 +143,8 @@ const cssCode = `.cta {
 </Layout>
 
 <style is:global>
-  .cta { display:inline-flex; align-items:center; justify-content:center; width:100%; max-width:320px; height:56px; padding:0 24px; border:none; border-radius:999px; cursor:pointer; font-family:'Montserrat',system-ui,sans-serif; font-size:14px; font-weight:500; transition:opacity .15s,filter .15s; white-space:nowrap; }
+  .cta { display:inline-flex; align-items:center; justify-content:center; width:100%; max-width:320px; height:56px; padding:0 24px; gap:8px; border:none; border-radius:999px; cursor:pointer; font-family:'Montserrat',system-ui,sans-serif; font-size:14px; font-weight:500; transition:opacity .15s,filter .15s; white-space:nowrap; }
+  .cta svg { flex-shrink:0; }
   .cta:disabled { opacity:.45; cursor:not-allowed; }
   .cta:hover:not(:disabled) { filter:brightness(.96); }
   .cta-free      { background:#fead77; color:#653024; }
@@ -105,25 +154,59 @@ const cssCode = `.cta {
 </style>
 
 <script>
+  function getIconSvg(pickerId: string): string {
+    return document.querySelector(`#${pickerId} .icon-pill.active`)?.innerHTML?.trim() ?? '';
+  }
+
   function update() {
     const type     = (document.querySelector('#p-type .pill.active') as HTMLElement)?.dataset.value ?? 'free';
     const label    = (document.getElementById('p-label') as HTMLInputElement).value || 'Continuar';
     const disabled = (document.getElementById('p-disabled') as HTMLInputElement).checked;
 
+    const showL = (document.getElementById('p-icon-left-show') as HTMLInputElement).checked;
+    const showR = (document.getElementById('p-icon-right-show') as HTMLInputElement).checked;
+    const leftSvg  = showL ? getIconSvg('p-icon-left-picker') : '';
+    const rightSvg = showR ? getIconSvg('p-icon-right-picker') : '';
+
     const preview = document.getElementById('comp-preview') as HTMLButtonElement;
     preview.className = `cta cta-${type}`;
     preview.disabled = disabled;
-    preview.textContent = label;
+    preview.innerHTML = `${leftSvg}${label}${rightSvg}`;
 
     const disAttr = disabled ? ' disabled' : '';
-    (document.getElementById('comp-code') as HTMLElement).textContent =
-      `<button class="cta cta-${type}"${disAttr}>${label}</button>`;
+    let code: string;
+    if (leftSvg || rightSvg) {
+      const lines: string[] = [];
+      if (leftSvg)  lines.push(`  ${leftSvg}`);
+      lines.push(`  ${label}`);
+      if (rightSvg) lines.push(`  ${rightSvg}`);
+      code = `<button class="cta cta-${type}"${disAttr}>\n${lines.join('\n')}\n</button>`;
+    } else {
+      code = `<button class="cta cta-${type}"${disAttr}>${label}</button>`;
+    }
+    (document.getElementById('comp-code') as HTMLElement).textContent = code;
   }
 
   document.querySelectorAll('#p-type .pill').forEach(pill => {
     pill.addEventListener('click', () => {
       pill.closest('.prop-pills')!.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
       pill.classList.add('active');
+      update();
+    });
+  });
+
+  document.querySelectorAll('#p-icon-left-picker .icon-pill, #p-icon-right-picker .icon-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      pill.closest('.icon-picker')!.querySelectorAll('.icon-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      update();
+    });
+  });
+
+  (['left', 'right'] as const).forEach(side => {
+    (document.getElementById(`p-icon-${side}-show`) as HTMLInputElement).addEventListener('change', e => {
+      const show = (e.target as HTMLInputElement).checked;
+      (document.getElementById(`p-icon-${side}-picker`) as HTMLElement).style.display = show ? 'flex' : 'none';
       update();
     });
   });
