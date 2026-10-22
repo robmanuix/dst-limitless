@@ -3,6 +3,10 @@
 *.jpg
 *.jpeg
 
+# Excepción: assets públicos del sitio (favicon, isologo) sí se versionan
+!Front/public/*.png
+!Front/public/*.jpg
+
 # Configuración personal de Claude Code
 .claude/settings.local.json
 
