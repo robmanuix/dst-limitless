@@ -1,0 +1,149 @@
+---
+import Layout from '../layouts/Layout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<Layout title="Dashboard" section="dashboard">
+  <div class="hero">
+    <div class="hero-glow"></div>
+
+    <div class="hero-badge">LL</div>
+
+    <h1 class="hero-title">Sistema de Diseño</h1>
+    <p class="hero-sub">La guía completa de tokens, componentes y patrones de interfaz de LIMITLESS by Serenza.</p>
+    <p class="hero-meta">Design System &nbsp;·&nbsp; LIMITLESS &nbsp;·&nbsp; v1.0.0 &nbsp;·&nbsp; 2026</p>
+
+    <div class="hero-links">
+      <a href={`${base}/tokens/colors`} class="hero-link">
+        <span class="hero-link-name">
+          Tokens
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="hero-link-desc">Colores, tipografía, espaciado, radios y elevaciones.</span>
+      </a>
+
+      <a href={`${base}/components/buttons`} class="hero-link">
+        <span class="hero-link-name">
+          Components
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="hero-link-desc">Botones, inputs, chips, badges y notificaciones.</span>
+      </a>
+
+      <a href={`${base}/support`} class="hero-link">
+        <span class="hero-link-name">
+          Support us
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="hero-link-desc">Archivo Figma, recursos y contribuciones.</span>
+      </a>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 56px);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 520px;
+    height: 520px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(254,173,119,0.18) 0%, transparent 62%);
+    pointer-events: none;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -54%);
+  }
+
+  .hero-badge {
+    width: 72px;
+    height: 72px;
+    border-radius: 20px;
+    background: linear-gradient(145deg, #fead77 0%, #653024 100%);
+    color: #fff;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+    position: relative;
+    box-shadow: 0 8px 32px rgba(254,173,119,0.35);
+  }
+
+  .hero-title {
+    font-family: 'Montserrat', system-ui, sans-serif;
+    font-size: 40px;
+    font-weight: 700;
+    color: #653024;
+    letter-spacing: -0.5px;
+    margin-bottom: 10px;
+    line-height: 1.1;
+    position: relative;
+  }
+
+  .hero-sub {
+    font-size: 15px;
+    color: #727880;
+    max-width: 460px;
+    line-height: 1.6;
+    margin-bottom: 14px;
+    position: relative;
+  }
+
+  .hero-meta {
+    font-size: 13px;
+    color: #9ea3ab;
+    margin-bottom: 80px;
+    position: relative;
+  }
+
+  .hero-links {
+    display: flex;
+    gap: 52px;
+    justify-content: center;
+    position: relative;
+  }
+
+  .hero-link {
+    text-decoration: none;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-width: 188px;
+    transition: opacity .15s;
+  }
+  .hero-link:hover { opacity: .6; }
+
+  .hero-link-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #151a1f;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .hero-link-desc {
+    font-size: 13px;
+    color: #727880;
+    line-height: 1.5;
+  }
+</style>

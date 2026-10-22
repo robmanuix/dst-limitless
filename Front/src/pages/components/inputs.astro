@@ -1,0 +1,195 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const subNav = [
+  { label: 'Botones',         href: '/components/buttons',       id: 'buttons' },
+  { label: 'Inputs',          href: '/components/inputs',        id: 'inputs' },
+  { label: 'Chips y Badges',  href: '/components/chips-badges',  id: 'chips-badges' },
+  { label: 'Notificaciones',  href: '/components/notifications', id: 'notifications' },
+];
+
+const cssCode = `/* Input Radio (selección única) */
+.inp-radio {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 280px; height: 40px; padding: 8px 18px; border-radius: 8px;
+  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.24);
+  color: #fff; font: 400 14px 'Montserrat', system-ui, sans-serif; cursor: pointer;
+}
+.inp-radio-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid #fff; }
+.inp-radio.is-selected { background: #fead77; border-color: #fead77; color: #653024; }
+.inp-radio.is-selected .inp-radio-dot { background: #653024; border-color: #653024; }
+
+/* Input Chip (opción múltiple / frecuencia) */
+.inp-chip {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 10px 16px; border-radius: 10px;
+  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.24);
+  color: #fff; font: 400 13px 'Montserrat', system-ui, sans-serif; cursor: pointer;
+}
+.inp-chip.is-selected { background: #fead77; border-color: #fead77; color: #653024; font-weight: 700; }
+
+/* Input Slider (escala Bajo–Alto) */
+.inp-slider { position: relative; width: 200px; height: 60px; }
+.inp-slider-track {
+  position: absolute; top: 22px; left: 0; width: 200px; height: 16px; border-radius: 999px;
+  background: linear-gradient(90deg, #c75e62, #fead77, #add1a2);
+}
+.inp-slider-handle {
+  position: absolute; top: 17px; width: 26px; height: 26px; border-radius: 50%;
+  background: #fff; border: 3px solid #fead77; box-sizing: border-box;
+}
+.inp-slider.pos-low  .inp-slider-handle { left: -3px; }
+.inp-slider.pos-mid  .inp-slider-handle { left: 87px; }
+.inp-slider.pos-high .inp-slider-handle { left: 177px; }
+.inp-slider-label {
+  position: absolute; top: 44px; left: 0; width: 200px; text-align: center;
+  font-size: 11px; color: rgba(255,255,255,.7);
+}`;
+---
+<Layout title="Inputs" section="components" subNav={subNav} pageTitle="Inputs" pageDesc="Controles de respuesta del Test de bienestar: radio, chip de opción múltiple y slider.">
+
+  <p class="section-label">Constructor</p>
+  <div class="builder">
+
+    <div class="builder-panel">
+      <p class="builder-panel-title">Propiedades</p>
+
+      <div class="prop-group">
+        <span class="prop-label">Componente</span>
+        <div class="prop-pills" id="p-comp">
+          <button class="pill active" data-value="radio">Radio</button>
+          <button class="pill" data-value="chip">Chip</button>
+          <button class="pill" data-value="slider">Slider</button>
+        </div>
+      </div>
+
+      <div class="prop-group" id="g-state">
+        <span class="prop-label">State</span>
+        <div class="prop-pills" id="p-state">
+          <button class="pill active" data-value="default">Default</button>
+          <button class="pill" data-value="selected">Selected</button>
+        </div>
+      </div>
+
+      <div class="prop-group" id="g-pos" style="display:none">
+        <span class="prop-label">Posición</span>
+        <div class="prop-pills" id="p-pos">
+          <button class="pill active" data-value="low">Bajo</button>
+          <button class="pill" data-value="mid">Medio</button>
+          <button class="pill" data-value="high">Alto</button>
+        </div>
+      </div>
+
+      <div class="prop-group" id="g-label">
+        <span class="prop-label">Etiqueta</span>
+        <input class="prop-input" id="p-label" type="text" value="No lo hago" />
+      </div>
+    </div>
+
+    <div class="builder-preview dark">
+      <div id="comp-preview"></div>
+    </div>
+  </div>
+
+  <p class="section-label" style="margin-top:24px">Propiedades del componente</p>
+  <table class="ds-table" style="margin-bottom:24px">
+    <thead><tr><th>Componente</th><th>Propiedad</th><th>Valores</th><th>Notas</th></tr></thead>
+    <tbody>
+      <tr><td>Input Radio</td><td>State</td><td>Default · Selected</td><td>280×40, radius 8px. Selected usa acento/principal.</td></tr>
+      <tr><td>Input Chip</td><td>State</td><td>Default · Selected</td><td>Radius 10px, texto 13px. Selected en bold.</td></tr>
+      <tr><td>Input Slider</td><td>Posición</td><td>Bajo · Medio · Alto</td><td>Track con gradiente crítico → advertencia → positivo. Handle blanco con borde acento/principal.</td></tr>
+    </tbody>
+  </table>
+
+  <p class="section-label">HTML generado</p>
+  <div class="code-block" style="margin-bottom:32px">
+    <button class="copy-btn" id="comp-copy">Copiar</button>
+    <pre id="comp-code"></pre>
+  </div>
+
+  <p class="section-label">CSS completo</p>
+  <div class="code-block">
+    <button class="copy-btn" data-copy={cssCode}>Copiar</button>
+    <pre>{cssCode}</pre>
+  </div>
+
+</Layout>
+
+<style is:global>
+  .inp-radio { display:flex; align-items:center; justify-content:space-between; width:280px; height:40px; padding:8px 18px; border-radius:8px; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.24); color:#fff; font:400 14px 'Montserrat',system-ui,sans-serif; cursor:pointer; }
+  .inp-radio-dot { width:16px; height:16px; border-radius:50%; border:2px solid #fff; }
+  .inp-radio.is-selected { background:#fead77; border-color:#fead77; color:#653024; }
+  .inp-radio.is-selected .inp-radio-dot { background:#653024; border-color:#653024; }
+  .inp-chip { display:inline-flex; align-items:center; justify-content:center; padding:10px 16px; border-radius:10px; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.24); color:#fff; font:400 13px 'Montserrat',system-ui,sans-serif; cursor:pointer; }
+  .inp-chip.is-selected { background:#fead77; border-color:#fead77; color:#653024; font-weight:700; }
+  .inp-slider { position:relative; width:200px; height:60px; }
+  .inp-slider-track { position:absolute; top:22px; left:0; width:200px; height:16px; border-radius:999px; background:linear-gradient(90deg,#c75e62,#fead77,#add1a2); }
+  .inp-slider-handle { position:absolute; top:17px; width:26px; height:26px; border-radius:50%; background:#fff; border:3px solid #fead77; box-sizing:border-box; }
+  .inp-slider.pos-low  .inp-slider-handle { left:-3px; }
+  .inp-slider.pos-mid  .inp-slider-handle { left:87px; }
+  .inp-slider.pos-high .inp-slider-handle { left:177px; }
+  .inp-slider-label { position:absolute; top:44px; left:0; width:200px; text-align:center; font-size:11px; color:rgba(255,255,255,.7); }
+</style>
+
+<script>
+  const DEFAULTS: Record<string, { default: string; selected: string }> = {
+    radio: { default: 'No lo hago', selected: '3 días' },
+    chip:  { default: 'Nunca',      selected: '3-4 días' },
+  };
+  const POS_LABEL: Record<string, string> = { low: 'Bajo', mid: 'Medio', high: 'Alto' };
+
+  const val = (sel: string, fallback: string) =>
+    (document.querySelector(`${sel} .pill.active`) as HTMLElement)?.dataset.value ?? fallback;
+  const labelInput = document.getElementById('p-label') as HTMLInputElement;
+  let lastKey = '';
+
+  function update() {
+    const comp  = val('#p-comp', 'radio');
+    const state = val('#p-state', 'default');
+    const pos   = val('#p-pos', 'low');
+
+    (document.getElementById('g-state') as HTMLElement).style.display = comp === 'slider' ? 'none' : '';
+    (document.getElementById('g-pos') as HTMLElement).style.display   = comp === 'slider' ? '' : 'none';
+    (document.getElementById('g-label') as HTMLElement).style.display = comp === 'slider' ? 'none' : '';
+
+    // Al cambiar de componente o estado, se sugiere la etiqueta de ejemplo de Figma
+    const key = `${comp}-${state}`;
+    if (comp !== 'slider' && key !== lastKey) {
+      labelInput.value = DEFAULTS[comp][state as 'default' | 'selected'];
+      lastKey = key;
+    }
+    const label = labelInput.value;
+    const sel = state === 'selected' ? ' is-selected' : '';
+
+    let html = '';
+    if (comp === 'radio') {
+      html = `<button type="button" class="inp-radio${sel}"><span>${label}</span><span class="inp-radio-dot"></span></button>`;
+    } else if (comp === 'chip') {
+      html = `<button type="button" class="inp-chip${sel}">${label}</button>`;
+    } else {
+      html = `<div class="inp-slider pos-${pos}"><div class="inp-slider-track"></div><div class="inp-slider-handle"></div><span class="inp-slider-label">${POS_LABEL[pos]}</span></div>`;
+    }
+    (document.getElementById('comp-preview') as HTMLElement).innerHTML = html;
+    (document.getElementById('comp-code') as HTMLElement).textContent = html;
+  }
+
+  document.querySelectorAll('#p-comp .pill, #p-state .pill, #p-pos .pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      pill.closest('.prop-pills')!.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      update();
+    });
+  });
+  labelInput.addEventListener('input', update);
+
+  document.getElementById('comp-copy')!.addEventListener('click', () => {
+    const code = (document.getElementById('comp-code') as HTMLElement).textContent ?? '';
+    navigator.clipboard.writeText(code).then(() => {
+      const btn = document.getElementById('comp-copy')!;
+      btn.textContent = 'Copiado ✓';
+      setTimeout(() => { btn.textContent = 'Copiar'; }, 1800);
+    });
+  });
+
+  update();
+</script>

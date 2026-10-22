@@ -1,0 +1,12 @@
+# Screenshots de desarrollo
+*.png
+*.jpg
+*.jpeg
+
+# Configuración personal de Claude Code
+.claude/settings.local.json
+
+# Dependencias y build (también cubiertos en Front/.gitignore)
+node_modules/
+dist/
+.env

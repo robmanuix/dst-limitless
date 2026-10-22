@@ -1,0 +1,191 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const subNav = [
+  { label: 'Botones',         href: '/components/buttons',       id: 'buttons' },
+  { label: 'Inputs',          href: '/components/inputs',        id: 'inputs' },
+  { label: 'Chips y Badges',  href: '/components/chips-badges',  id: 'chips-badges' },
+  { label: 'Notificaciones',  href: '/components/notifications', id: 'notifications' },
+];
+
+const cssCode = `/* Chip de Eje (navegación entre ejes) */
+.chip-eje {
+  display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 16px 0 10px;
+  border-radius: 999px; background: rgba(255,255,255,.08); color: #fff;
+  font: 400 13px 'Montserrat', system-ui, sans-serif; border: none; cursor: pointer;
+}
+.chip-eje-dot { width: 20px; height: 20px; border-radius: 50%; background: rgba(255,255,255,.9); }
+.chip-eje.is-active { background: #fead77; color: #653024; font-weight: 700; }
+.chip-eje.is-active .chip-eje-dot { background: #653024; }
+
+/* Chip de Lives (protagónico) */
+.chip-lives {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  width: 340px; height: 48px; padding: 8px 12px; border-radius: 8px;
+  background: rgba(255,255,255,.12); border: .5px solid rgba(255,255,255,.24); color: #fff;
+  font-family: 'Montserrat', system-ui, sans-serif;
+}
+.chip-lives-icon { width: 32px; height: 32px; border-radius: 50%; background: rgba(254,173,119,.35); flex-shrink: 0; }
+.chip-lives-label { flex: 1; font-size: 12px; font-weight: 700; }
+.chip-lives-num { font-size: 24px; font-weight: 700; }
+
+/* Badge Premium */
+.badge-premium {
+  display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px 7px 12px; border-radius: 999px;
+  background: linear-gradient(15deg, #f5d896 14%, #e0a94f 46%, #b8862f 86%);
+  color: #4a2410; font: 700 11px 'Montserrat', system-ui, sans-serif;
+}
+.badge-premium-icon { width: 14px; height: 14px; border-radius: 50%; background: #4a2410; }
+
+/* Badge de Notificación (punto de no leído sobre la campana) */
+.badge-notif { position: relative; width: 40px; height: 40px; }
+.badge-notif-ring { position: absolute; inset: 9px; border: 2px solid #fff; border-radius: 50%; }
+.badge-notif-dot { position: absolute; top: 6px; right: 6px; width: 10px; height: 10px; border-radius: 50%; background: #c75e62; } /* critical/500 */`;
+---
+<Layout title="Chips y Badges" section="components" subNav={subNav} pageTitle="Chips y Badges" pageDesc="Navegación de ejes, saldo de Lives, identificador Premium y notificaciones.">
+
+  <p class="section-label">Constructor</p>
+  <div class="builder">
+
+    <div class="builder-panel">
+      <p class="builder-panel-title">Propiedades</p>
+
+      <div class="prop-group">
+        <span class="prop-label">Componente</span>
+        <div class="prop-pills" id="p-comp">
+          <button class="pill active" data-value="eje">Chip Eje</button>
+          <button class="pill" data-value="lives">Chip Lives</button>
+          <button class="pill" data-value="premium">Badge Premium</button>
+          <button class="pill" data-value="notif">Badge Notificación</button>
+        </div>
+      </div>
+
+      <div class="prop-group" id="g-state">
+        <span class="prop-label">State</span>
+        <div class="prop-pills" id="p-state">
+          <button class="pill active" data-value="inactivo">Inactivo</button>
+          <button class="pill" data-value="activo">Activo</button>
+        </div>
+      </div>
+
+      <div class="prop-group" id="g-label">
+        <span class="prop-label">Etiqueta</span>
+        <input class="prop-input" id="p-label" type="text" value="Salud Mental" />
+      </div>
+
+      <div class="prop-group" id="g-num" style="display:none">
+        <span class="prop-label">Total de Lives</span>
+        <input class="prop-input" id="p-num" type="text" value="240" />
+      </div>
+    </div>
+
+    <div class="builder-preview dark" id="comp-bg">
+      <div id="comp-preview"></div>
+    </div>
+  </div>
+
+  <p class="section-label" style="margin-top:24px">Propiedades del componente</p>
+  <table class="ds-table" style="margin-bottom:24px">
+    <thead><tr><th>Componente</th><th>Propiedad</th><th>Valores</th><th>Notas</th></tr></thead>
+    <tbody>
+      <tr><td>Chip Eje</td><td>State</td><td>Inactivo · Activo</td><td>Navegación entre ejes. Inactivo translúcido 8%; Activo acento/principal con texto bold.</td></tr>
+      <tr><td>Chip Lives</td><td>Etiqueta · Total</td><td>String · Número</td><td>Franja ancho completo, número en 24px. Ajustado el 7-sept para dar mayor protagonismo.</td></tr>
+      <tr><td>Badge Premium</td><td>—</td><td>—</td><td>Degradado dorado metálico, corona + texto PREMIUM.</td></tr>
+      <tr><td>Badge Notificación</td><td>—</td><td>—</td><td>Punto de no leído sobre la campana del header. Color critical/500.</td></tr>
+    </tbody>
+  </table>
+
+  <p class="section-label">HTML generado</p>
+  <div class="code-block" style="margin-bottom:32px">
+    <button class="copy-btn" id="comp-copy">Copiar</button>
+    <pre id="comp-code"></pre>
+  </div>
+
+  <p class="section-label">CSS completo</p>
+  <div class="code-block">
+    <button class="copy-btn" data-copy={cssCode}>Copiar</button>
+    <pre>{cssCode}</pre>
+  </div>
+
+</Layout>
+
+<style is:global>
+  .chip-eje { display:inline-flex; align-items:center; gap:8px; height:36px; padding:0 16px 0 10px; border-radius:999px; background:rgba(255,255,255,.08); color:#fff; font:400 13px 'Montserrat',system-ui,sans-serif; border:none; cursor:pointer; }
+  .chip-eje-dot { width:20px; height:20px; border-radius:50%; background:rgba(255,255,255,.9); }
+  .chip-eje.is-active { background:#fead77; color:#653024; font-weight:700; }
+  .chip-eje.is-active .chip-eje-dot { background:#653024; }
+  .chip-lives { display:flex; align-items:center; justify-content:space-between; gap:12px; width:340px; height:48px; padding:8px 12px; border-radius:8px; background:rgba(255,255,255,.12); border:.5px solid rgba(255,255,255,.24); color:#fff; font-family:'Montserrat',system-ui,sans-serif; }
+  .chip-lives-icon { width:32px; height:32px; border-radius:50%; background:rgba(254,173,119,.35); flex-shrink:0; }
+  .chip-lives-label { flex:1; font-size:12px; font-weight:700; }
+  .chip-lives-num { font-size:24px; font-weight:700; }
+  .badge-premium { display:inline-flex; align-items:center; gap:6px; padding:7px 14px 7px 12px; border-radius:999px; background:linear-gradient(15deg,#f5d896 14%,#e0a94f 46%,#b8862f 86%); color:#4a2410; font:700 11px 'Montserrat',system-ui,sans-serif; }
+  .badge-premium-icon { width:14px; height:14px; border-radius:50%; background:#4a2410; }
+  .badge-notif { position:relative; width:40px; height:40px; }
+  .badge-notif-ring { position:absolute; inset:9px; border:2px solid #fff; border-radius:50%; }
+  .badge-notif-dot { position:absolute; top:6px; right:6px; width:10px; height:10px; border-radius:50%; background:#c75e62; }
+</style>
+
+<script>
+  const val = (sel: string, fallback: string) =>
+    (document.querySelector(`${sel} .pill.active`) as HTMLElement)?.dataset.value ?? fallback;
+  const labelInput = document.getElementById('p-label') as HTMLInputElement;
+  const numInput = document.getElementById('p-num') as HTMLInputElement;
+  let lastComp = 'eje';
+  let lastState = 'inactivo';
+
+  function update() {
+    const comp  = val('#p-comp', 'eje');
+    const state = val('#p-state', 'inactivo');
+
+    // Etiquetas de ejemplo del Figma al cambiar de componente/estado
+    if (comp !== lastComp) {
+      if (comp === 'eje')   labelInput.value = state === 'activo' ? 'Salud Física' : 'Salud Mental';
+      if (comp === 'lives') labelInput.value = 'Tus Lives LIMITLESS';
+      lastComp = comp;
+    } else if (comp === 'eje' && state !== lastState) {
+      labelInput.value = state === 'activo' ? 'Salud Física' : 'Salud Mental';
+    }
+    lastState = state;
+
+    (document.getElementById('g-state') as HTMLElement).style.display = comp === 'eje' ? '' : 'none';
+    (document.getElementById('g-label') as HTMLElement).style.display = (comp === 'eje' || comp === 'lives') ? '' : 'none';
+    (document.getElementById('g-num') as HTMLElement).style.display   = comp === 'lives' ? '' : 'none';
+    (document.getElementById('comp-bg') as HTMLElement).className =
+      `builder-preview ${comp === 'premium' || comp === 'notif' ? 'dark-premium' : 'dark'}`;
+
+    const label = labelInput.value;
+    let html = '';
+    if (comp === 'eje') {
+      html = `<button type="button" class="chip-eje${state === 'activo' ? ' is-active' : ''}"><span class="chip-eje-dot"></span>${label}</button>`;
+    } else if (comp === 'lives') {
+      html = `<div class="chip-lives"><span class="chip-lives-icon"></span><span class="chip-lives-label">${label}</span><span class="chip-lives-num">${numInput.value}</span></div>`;
+    } else if (comp === 'premium') {
+      html = `<span class="badge-premium"><span class="badge-premium-icon"></span>PREMIUM</span>`;
+    } else {
+      html = `<span class="badge-notif" aria-label="Notificaciones sin leer"><span class="badge-notif-ring"></span><span class="badge-notif-dot"></span></span>`;
+    }
+    (document.getElementById('comp-preview') as HTMLElement).innerHTML = html;
+    (document.getElementById('comp-code') as HTMLElement).textContent = html;
+  }
+
+  document.querySelectorAll('#p-comp .pill, #p-state .pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      pill.closest('.prop-pills')!.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      update();
+    });
+  });
+  labelInput.addEventListener('input', update);
+  numInput.addEventListener('input', update);
+
+  document.getElementById('comp-copy')!.addEventListener('click', () => {
+    const code = (document.getElementById('comp-code') as HTMLElement).textContent ?? '';
+    navigator.clipboard.writeText(code).then(() => {
+      const btn = document.getElementById('comp-copy')!;
+      btn.textContent = 'Copiado ✓';
+      setTimeout(() => { btn.textContent = 'Copiar'; }, 1800);
+    });
+  });
+
+  update();
+</script>

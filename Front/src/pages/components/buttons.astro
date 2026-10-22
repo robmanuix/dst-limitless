@@ -1,0 +1,144 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const subNav = [
+  { label: 'Botones',         href: '/components/buttons',       id: 'buttons' },
+  { label: 'Inputs',          href: '/components/inputs',        id: 'inputs' },
+  { label: 'Chips y Badges',  href: '/components/chips-badges',  id: 'chips-badges' },
+  { label: 'Notificaciones',  href: '/components/notifications', id: 'notifications' },
+];
+
+const cssCode = `.cta {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 100%; max-width: 320px; height: 56px; padding: 0 24px;
+  border: none; border-radius: 999px; cursor: pointer;
+  font-family: 'Montserrat', system-ui, sans-serif; font-size: 14px; font-weight: 500;
+  transition: opacity .15s, filter .15s; white-space: nowrap;
+}
+.cta:disabled { opacity: .45; cursor: not-allowed; }
+.cta:hover:not(:disabled) { filter: brightness(.96); }
+/* Variantes */
+.cta-free      { background: #fead77; color: #653024; } /* acento/principal */
+.cta-premium   { background: #e0a94f; color: #653024; } /* acento/premium */
+.cta-success   { background: #add1a2; color: #1e3a1b; } /* positivo/500 */
+.cta-secondary { background: rgba(255,255,255,.12); color: #ffffff; border: 1px solid rgba(255,255,255,.24); } /* sobre fondo/base */`;
+---
+<Layout title="Botones" section="components" subNav={subNav} pageTitle="Botones / CTA" pageDesc="CTA ancho completo, 56px, radius pill. 4 variantes según contexto.">
+
+  <p class="section-label">Constructor</p>
+  <div class="builder">
+
+    <div class="builder-panel">
+      <p class="builder-panel-title">Propiedades</p>
+
+      <div class="prop-group">
+        <span class="prop-label">Variant</span>
+        <div class="prop-pills" id="p-type">
+          <button class="pill active" data-value="free">Free</button>
+          <button class="pill" data-value="premium">Premium</button>
+          <button class="pill" data-value="success">Success</button>
+          <button class="pill" data-value="secondary">Secondary</button>
+        </div>
+      </div>
+
+      <div class="prop-group">
+        <span class="prop-label">Etiqueta</span>
+        <input class="prop-input" id="p-label" type="text" value="Continuar" />
+      </div>
+
+      <div class="prop-group prop-row">
+        <span class="prop-label">Deshabilitado</span>
+        <label class="ctrl-toggle">
+          <input type="checkbox" id="p-disabled" />
+          <span class="ctrl-track"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="builder-preview dark">
+      <button id="comp-preview" class="cta cta-free" style="max-width:320px">Continuar</button>
+    </div>
+  </div>
+
+  <p class="section-label" style="margin-top:24px">Propiedades del componente</p>
+  <table class="ds-table" style="margin-bottom:24px">
+    <thead><tr><th>Propiedad</th><th>Valores</th><th>Default</th></tr></thead>
+    <tbody>
+      <tr><td>Variant</td><td>Free · Premium · Success · Secondary</td><td>Free</td></tr>
+      <tr><td>Texto</td><td>String</td><td>Continuar</td></tr>
+    </tbody>
+  </table>
+
+  <p class="section-label">Variable de color por variante</p>
+  <table class="ds-table" style="margin-bottom:32px">
+    <thead><tr><th>Variante</th><th>Variable Figma</th><th>Uso</th></tr></thead>
+    <tbody>
+      <tr><td>Free</td><td class="mono">acento/principal · #FEAD77</td><td>CTA estándar de la experiencia Free</td></tr>
+      <tr><td>Premium</td><td class="mono">acento/premium · #E0A94F</td><td>Desbloquear contenido Premium</td></tr>
+      <tr><td>Success</td><td class="mono">color/positivo · #ADD1A2</td><td>Ver resultados, acción completada</td></tr>
+      <tr><td>Secondary</td><td class="mono">texto/primario · #FFFFFF (12% fondo)</td><td>Acción secundaria sobre fondo oscuro</td></tr>
+    </tbody>
+  </table>
+
+  <p class="section-label">HTML generado</p>
+  <div class="code-block" style="margin-bottom:32px">
+    <button class="copy-btn" id="comp-copy">Copiar</button>
+    <pre id="comp-code"></pre>
+  </div>
+
+  <p class="section-label">CSS completo</p>
+  <div class="code-block">
+    <button class="copy-btn" data-copy={cssCode}>Copiar</button>
+    <pre>{cssCode}</pre>
+  </div>
+
+</Layout>
+
+<style is:global>
+  .cta { display:inline-flex; align-items:center; justify-content:center; width:100%; max-width:320px; height:56px; padding:0 24px; border:none; border-radius:999px; cursor:pointer; font-family:'Montserrat',system-ui,sans-serif; font-size:14px; font-weight:500; transition:opacity .15s,filter .15s; white-space:nowrap; }
+  .cta:disabled { opacity:.45; cursor:not-allowed; }
+  .cta:hover:not(:disabled) { filter:brightness(.96); }
+  .cta-free      { background:#fead77; color:#653024; }
+  .cta-premium   { background:#e0a94f; color:#653024; }
+  .cta-success   { background:#add1a2; color:#1e3a1b; }
+  .cta-secondary { background:rgba(255,255,255,.12); color:#ffffff; border:1px solid rgba(255,255,255,.24); }
+</style>
+
+<script>
+  function update() {
+    const type     = (document.querySelector('#p-type .pill.active') as HTMLElement)?.dataset.value ?? 'free';
+    const label    = (document.getElementById('p-label') as HTMLInputElement).value || 'Continuar';
+    const disabled = (document.getElementById('p-disabled') as HTMLInputElement).checked;
+
+    const preview = document.getElementById('comp-preview') as HTMLButtonElement;
+    preview.className = `cta cta-${type}`;
+    preview.disabled = disabled;
+    preview.textContent = label;
+
+    const disAttr = disabled ? ' disabled' : '';
+    (document.getElementById('comp-code') as HTMLElement).textContent =
+      `<button class="cta cta-${type}"${disAttr}>${label}</button>`;
+  }
+
+  document.querySelectorAll('#p-type .pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      pill.closest('.prop-pills')!.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      update();
+    });
+  });
+
+  (document.getElementById('p-label') as HTMLInputElement).addEventListener('input', update);
+  (document.getElementById('p-disabled') as HTMLInputElement).addEventListener('change', update);
+
+  document.getElementById('comp-copy')!.addEventListener('click', () => {
+    const code = (document.getElementById('comp-code') as HTMLElement).textContent ?? '';
+    navigator.clipboard.writeText(code).then(() => {
+      const btn = document.getElementById('comp-copy')!;
+      btn.textContent = 'Copiado ✓';
+      setTimeout(() => { btn.textContent = 'Copiar'; }, 1800);
+    });
+  });
+
+  update();
+</script>

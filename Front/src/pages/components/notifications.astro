@@ -1,0 +1,156 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const subNav = [
+  { label: 'Botones',         href: '/components/buttons',       id: 'buttons' },
+  { label: 'Inputs',          href: '/components/inputs',        id: 'inputs' },
+  { label: 'Chips y Badges',  href: '/components/chips-badges',  id: 'chips-badges' },
+  { label: 'Notificaciones',  href: '/components/notifications', id: 'notifications' },
+];
+
+const cssCode = `.notif {
+  display: flex; align-items: center; gap: 12px;
+  width: 100%; max-width: 560px; height: 64px; padding: 12px; border-radius: 12px;
+  background: rgba(var(--acc), .12); border: 1px solid rgba(var(--acc), .3);
+  font-family: 'Montserrat', system-ui, sans-serif; overflow: hidden;
+}
+.notif-icon {
+  width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(var(--acc), .25);
+}
+.notif-icon::after { content: ''; width: 12px; height: 12px; border-radius: 50%; background: rgb(var(--acc)); }
+.notif-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.notif-title { font-size: 12px; font-weight: 500; color: #fff; }
+.notif-desc  { font-size: 11px; font-weight: 400; color: rgba(255,255,255,.65); }
+/* Tipos: solo cambia --acc */
+.notif-lives, .notif-canje   { --acc: 254,173,119; } /* acento/principal */
+.notif-pendiente             { --acc: 199,94,98;   } /* critical */
+.notif-logro, .notif-indice  { --acc: 173,209,162; } /* positive */
+.notif-premium               { --acc: 224,169,79;  } /* premium */`;
+---
+<Layout title="Notificaciones" section="components" subNav={subNav} pageTitle="Notificaciones" pageDesc="6 tipos, cada uno con color e ícono semántico propio.">
+
+  <p class="section-label">Constructor</p>
+  <div class="builder">
+
+    <div class="builder-panel">
+      <p class="builder-panel-title">Propiedades</p>
+
+      <div class="prop-group">
+        <span class="prop-label">Type</span>
+        <div class="prop-pills" id="p-type">
+          <button class="pill active" data-value="lives">Lives</button>
+          <button class="pill" data-value="pendiente">Pendiente</button>
+          <button class="pill" data-value="logro">Logro</button>
+          <button class="pill" data-value="canje">Canje</button>
+          <button class="pill" data-value="indice">Índice</button>
+          <button class="pill" data-value="premium">Premium</button>
+        </div>
+      </div>
+
+      <div class="prop-group">
+        <span class="prop-label">Título</span>
+        <input class="prop-input" id="p-title" type="text" value="¡Ganaste +20 Lives!" />
+      </div>
+
+      <div class="prop-group">
+        <span class="prop-label">Descripción</span>
+        <input class="prop-input" id="p-desc" type="text" value="Completaste &quot;Camina 30 minutos&quot;." />
+      </div>
+    </div>
+
+    <div class="builder-preview dark" style="padding:32px">
+      <div id="comp-preview" style="width:100%;max-width:560px"></div>
+    </div>
+  </div>
+
+  <p class="section-label" style="margin-top:24px">Propiedades del componente</p>
+  <table class="ds-table" style="margin-bottom:24px">
+    <thead><tr><th>Type</th><th>Color</th><th>Uso</th></tr></thead>
+    <tbody>
+      <tr><td>Lives</td><td class="mono">acento/principal · #FEAD77</td><td>Lives ganados</td></tr>
+      <tr><td>Pendiente</td><td class="mono">color/critical · #C75E62</td><td>Actividad pendiente</td></tr>
+      <tr><td>Logro</td><td class="mono">color/positive · #ADD1A2</td><td>Logro / meta cumplida</td></tr>
+      <tr><td>Canje</td><td class="mono">acento/principal · #FEAD77</td><td>Cercanía a un beneficio canjeable</td></tr>
+      <tr><td>Índice</td><td class="mono">color/positive · #ADD1A2</td><td>Cambio en el índice de bienestar</td></tr>
+      <tr><td>Premium</td><td class="mono">color/premium · #E0A94F</td><td>Invitación a Premium</td></tr>
+    </tbody>
+  </table>
+
+  <p class="section-label">HTML generado</p>
+  <div class="code-block" style="margin-bottom:32px">
+    <button class="copy-btn" id="comp-copy">Copiar</button>
+    <pre id="comp-code"></pre>
+  </div>
+
+  <p class="section-label">CSS completo</p>
+  <div class="code-block">
+    <button class="copy-btn" data-copy={cssCode}>Copiar</button>
+    <pre>{cssCode}</pre>
+  </div>
+
+</Layout>
+
+<style is:global>
+  .notif { display:flex; align-items:center; gap:12px; width:100%; max-width:560px; height:64px; padding:12px; border-radius:12px; background:rgba(var(--acc),.12); border:1px solid rgba(var(--acc),.3); font-family:'Montserrat',system-ui,sans-serif; overflow:hidden; }
+  .notif-icon { width:36px; height:36px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:rgba(var(--acc),.25); }
+  .notif-icon::after { content:''; width:12px; height:12px; border-radius:50%; background:rgb(var(--acc)); }
+  .notif-text { display:flex; flex-direction:column; gap:2px; min-width:0; }
+  .notif-title { font-size:12px; font-weight:500; color:#fff; }
+  .notif-desc  { font-size:11px; font-weight:400; color:rgba(255,255,255,.65); }
+  .notif-lives, .notif-canje  { --acc:254,173,119; }
+  .notif-pendiente            { --acc:199,94,98; }
+  .notif-logro, .notif-indice { --acc:173,209,162; }
+  .notif-premium              { --acc:224,169,79; }
+</style>
+
+<script>
+  const TYPES: Record<string, { title: string; desc: string }> = {
+    lives:     { title: '¡Ganaste +20 Lives!',             desc: 'Completaste "Camina 30 minutos".' },
+    pendiente: { title: 'Tienes 2 actividades pendientes', desc: 'Completa tu plan de hoy.' },
+    logro:     { title: '¡Meta cumplida!',                 desc: '2 semanas activo consecutivas.' },
+    canje:     { title: 'Ya casi llegas a un beneficio',   desc: 'Te faltan 110 Lives.' },
+    indice:    { title: 'Tu índice subió a 58',            desc: '+4 puntos vs. medición anterior.' },
+    premium:   { title: 'Desbloquea más con Premium',      desc: 'Gana Lives más rápido.' },
+  };
+  const titleInput = document.getElementById('p-title') as HTMLInputElement;
+  const descInput  = document.getElementById('p-desc') as HTMLInputElement;
+
+  function update() {
+    const type = (document.querySelector('#p-type .pill.active') as HTMLElement)?.dataset.value ?? 'lives';
+    const html = `<div class="notif notif-${type}">
+  <div class="notif-icon"></div>
+  <div class="notif-text">
+    <span class="notif-title">${titleInput.value}</span>
+    <span class="notif-desc">${descInput.value}</span>
+  </div>
+</div>`;
+    (document.getElementById('comp-preview') as HTMLElement).innerHTML = html;
+    (document.getElementById('comp-code') as HTMLElement).textContent = html;
+  }
+
+  document.querySelectorAll('#p-type .pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      document.querySelectorAll('#p-type .pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      const t = TYPES[(pill as HTMLElement).dataset.value ?? 'lives'];
+      titleInput.value = t.title;
+      descInput.value = t.desc;
+      update();
+    });
+  });
+  titleInput.addEventListener('input', update);
+  descInput.addEventListener('input', update);
+
+  document.getElementById('comp-copy')!.addEventListener('click', () => {
+    const code = (document.getElementById('comp-code') as HTMLElement).textContent ?? '';
+    navigator.clipboard.writeText(code).then(() => {
+      const btn = document.getElementById('comp-copy')!;
+      btn.textContent = 'Copiado ✓';
+      setTimeout(() => { btn.textContent = 'Copiar'; }, 1800);
+    });
+  });
+
+  update();
+</script>

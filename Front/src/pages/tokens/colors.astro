@@ -1,0 +1,77 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { colors, colorGroups, figmaVariables } from '../../data/tokens.js';
+
+const subNav = [
+  { label: 'Colores',       href: '/tokens/colors',       id: 'colors' },
+  { label: 'Tipografía',    href: '/tokens/typography',   id: 'typography' },
+  { label: 'Espaciado',     href: '/tokens/spacing',      id: 'spacing' },
+  { label: 'Border Radius', href: '/tokens/border-radius',id: 'border-radius' },
+  { label: 'Elevaciones',   href: '/tokens/elevations',   id: 'elevations' },
+];
+
+function byGroup(arr, group) { return arr.filter(c => c.group === group); }
+
+---
+<Layout title="Colores" section="tokens" subNav={subNav} pageTitle="Colores" pageDesc="Paleta semántica, de marca y neutros de LIMITLESS. Experiencia Free en café/durazno, Premium en negro/dorado.">
+
+  <div class="search-bar">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="#9ea3ab" stroke-width="1.4"/><path d="M10 10L12.5 12.5" stroke="#9ea3ab" stroke-width="1.4" stroke-linecap="round"/></svg>
+    <input id="search" type="text" placeholder="Buscar token..." />
+  </div>
+
+  {colorGroups.map(group => {
+    const items = byGroup(colors, group);
+    return (
+      <div>
+        <div class="group-header">
+          <span class="group-title">{group}</span>
+          <span class="group-count">{items.length}</span>
+        </div>
+        <div class="token-grid-wide">
+          {items.map(c => (
+            <div class="token-card" data-searchable={`${c.name} ${c.desc}`}>
+              <div class="token-swatch" style={`background:${c.hex};${c.hex.toLowerCase()==='#ffffff' ? 'box-shadow:inset 0 0 0 1px var(--border)' : ''}`}></div>
+              <div class="token-body">
+                <div class="token-name">{c.name}</div>
+                <div class="sem-desc">{c.desc}</div>
+                <div class="token-meta">
+                  <span class="token-value">{c.hex.toUpperCase()}</span>
+                  <button class="copy-btn" data-copy={c.hex.toUpperCase()}>
+                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><rect x="4" y="4" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M2 8H1.5A.5.5 0 0 1 1 7.5V1.5A.5.5 0 0 1 1.5 1H7.5A.5.5 0 0 1 8 1.5V2" stroke="currentColor" stroke-width="1.3"/></svg>
+                    Copiar
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  })}
+
+  <p class="section-label" style="margin-top:40px">Variables de Figma usadas por los componentes</p>
+  <table class="ds-table">
+    <thead><tr><th>Variable</th><th>Valor</th><th>Uso</th></tr></thead>
+    <tbody>
+      {figmaVariables.map(v => (
+        <tr data-searchable={v.name}>
+          <td><span class="var-dot" style={`background:${v.hex}`}></span><span class="mono">{v.name}</span></td>
+          <td class="mono">{v.hex.toUpperCase()}</td>
+          <td>{v.use}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+
+  <p class="section-label" style="margin-top:40px">Variables CSS</p>
+  <div class="code-block">
+    <button class="copy-btn" data-copy={`:root {\n${colors.map(c=>`  --${c.name.replace('/','-')}: ${c.hex.toUpperCase()};`).join('\n')}\n}`}>Copiar todo</button>
+    <pre>{`:root {\n${colors.map(c=>`  --${c.name.replace('/','-')}: ${c.hex.toUpperCase()};`).join('\n')}\n}`}</pre>
+  </div>
+</Layout>
+
+<style is:global>
+  .sem-desc { font-size: 11px; color: var(--txt-tertiary); margin-bottom: 6px; }
+  .var-dot { display:inline-block; width:12px; height:12px; border-radius:50%; margin-right:8px; vertical-align:middle; box-shadow: inset 0 0 0 1px rgba(0,0,0,.15); }
+</style>
