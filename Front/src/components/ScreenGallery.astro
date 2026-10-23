@@ -1,10 +1,8 @@
 ---
 const { items, folder, pending = false } = Astro.props;
-const sectionOrder = ['Onboarding','Test de bienestar','Score Test','Dashboard','Detalle EJE','Progreso','Canje','Perfil'];
+const sectionOrder = ['Onboarding','Test de bienestar','Score Test','Dashboard','Detalle EJE','Progreso','Canje','Perfil','Alertas/Modales'];
 const present = [...new Set(items.map(i => i.section).filter(Boolean))];
 const sections = [...sectionOrder.filter(x => present.includes(x)), ...present.filter(x => !sectionOrder.includes(x))];
-const kindOrder = ['Pantallas','Alertas','Notificaciones','Modales','Bottom sheets'];
-const kinds = kindOrder.filter(k => items.some(i => i.kind === k));
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 <div class="ifc-filterbar">
@@ -19,21 +17,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       </div>
     </div>
   )}
-  {kinds.length > 1 && (
-    <div class="ifc-row">
-      <span class="ifc-row-label">Tipo</span>
-      <div class="ifc-filters" data-group="kind" role="tablist" aria-label="Filtrar por tipo">
-        <button type="button" class="ifc-chip active" data-filter="all">Todos <span>{items.length}</span></button>
-        {kinds.map(k => (
-          <button type="button" class="ifc-chip" data-filter={k}>{k} <span>{items.filter(i => i.kind === k).length}</span></button>
-        ))}
-      </div>
-    </div>
-  )}
 </div>
 <div class="ifc-grid">
   {items.map((it, i) => (
-    <figure class="ifc-card" data-title={it.title} data-section={it.section} data-kind={it.kind}>
+    <figure class="ifc-card" data-title={it.title} data-section={it.section}>
       <button class="ifc-thumb" type="button" aria-label={`Ampliar ${it.title}`}>
         {pending && <div class="ifc-ph"><span>Captura pendiente</span><small>{it.file}</small></div>}
         <img src={`${base}/interfaces/${folder}/${it.file}`} alt={it.title} loading="lazy"
@@ -81,14 +68,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 <script>
   const cards = document.querySelectorAll<HTMLElement>('.ifc-card');
-  const state: Record<string, string> = { section: 'all', kind: 'all' };
+  const state: Record<string, string> = { section: 'all' };
   function applyFilter() {
     document.querySelectorAll<HTMLElement>('.ifc-filters').forEach(g => {
       g.querySelectorAll<HTMLElement>('.ifc-chip').forEach(c => c.classList.toggle('active', c.dataset.filter === state[g.dataset.group!]));
     });
     let n = 0;
     cards.forEach(card => {
-      const show = (state.section === 'all' || card.dataset.section === state.section) && (state.kind === 'all' || card.dataset.kind === state.kind);
+      const show = (state.section === 'all' || card.dataset.section === state.section);
       card.hidden = !show;
       if (show) { n++; const num = card.querySelector('.ifc-n'); if (num) num.textContent = String(n).padStart(2, '0'); }
     });
