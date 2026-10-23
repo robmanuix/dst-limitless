@@ -3,19 +3,37 @@ const { items, folder, pending = false } = Astro.props;
 const sectionOrder = ['Onboarding','Test de bienestar','Score Test','Dashboard','Detalle EJE','Progreso','Canje','Perfil'];
 const present = [...new Set(items.map(i => i.section).filter(Boolean))];
 const sections = [...sectionOrder.filter(x => present.includes(x)), ...present.filter(x => !sectionOrder.includes(x))];
+const kindOrder = ['Pantallas','Alertas','Notificaciones','Modales','Bottom sheets'];
+const kinds = kindOrder.filter(k => items.some(i => i.kind === k));
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
-{sections.length > 0 && (
-  <div class="ifc-filters" role="tablist" aria-label="Filtrar por sección">
-    <button type="button" class="ifc-chip active" data-filter="all">Todos <span>{items.length}</span></button>
-    {sections.map(sec => (
-      <button type="button" class="ifc-chip" data-filter={sec}>{sec} <span>{items.filter(i => i.section === sec).length}</span></button>
-    ))}
-  </div>
-)}
+<div class="ifc-filterbar">
+  {sections.length > 0 && (
+    <div class="ifc-row">
+      <span class="ifc-row-label">Sección</span>
+      <div class="ifc-filters" data-group="section" role="tablist" aria-label="Filtrar por sección">
+        <button type="button" class="ifc-chip active" data-filter="all">Todos <span>{items.length}</span></button>
+        {sections.map(sec => (
+          <button type="button" class="ifc-chip" data-filter={sec}>{sec} <span>{items.filter(i => i.section === sec).length}</span></button>
+        ))}
+      </div>
+    </div>
+  )}
+  {kinds.length > 1 && (
+    <div class="ifc-row">
+      <span class="ifc-row-label">Tipo</span>
+      <div class="ifc-filters" data-group="kind" role="tablist" aria-label="Filtrar por tipo">
+        <button type="button" class="ifc-chip active" data-filter="all">Todos <span>{items.length}</span></button>
+        {kinds.map(k => (
+          <button type="button" class="ifc-chip" data-filter={k}>{k} <span>{items.filter(i => i.kind === k).length}</span></button>
+        ))}
+      </div>
+    </div>
+  )}
+</div>
 <div class="ifc-grid">
   {items.map((it, i) => (
-    <figure class="ifc-card" data-title={it.title} data-section={it.section}>
+    <figure class="ifc-card" data-title={it.title} data-section={it.section} data-kind={it.kind}>
       <button class="ifc-thumb" type="button" aria-label={`Ampliar ${it.title}`}>
         {pending && <div class="ifc-ph"><span>Captura pendiente</span><small>{it.file}</small></div>}
         <img src={`${base}/interfaces/${folder}/${it.file}`} alt={it.title} loading="lazy"
@@ -25,6 +43,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </figure>
   ))}
 </div>
+<p id="ifc-empty" class="ifc-empty" hidden>No hay pantallas con esta combinación de filtros.</p>
 <dialog id="ifc-dialog" class="ifc-dialog">
   <button type="button" class="ifc-close" aria-label="Cerrar">×</button>
   <img id="ifc-big" alt="" />
@@ -32,7 +51,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 </dialog>
 
 <style is:global>
-  .ifc-filters { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 24px; }
+  .ifc-filterbar { display:flex; flex-direction:column; gap:12px; margin:0 0 24px; }
+  .ifc-row { display:flex; align-items:flex-start; gap:12px; }
+  .ifc-row-label { flex:0 0 64px; padding-top:8px; font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--txt-secondary); }
+  .ifc-filters { display:flex; flex-wrap:wrap; gap:8px; }
+  .ifc-empty { color:var(--txt-secondary); font-size:14px; }
+  @media (max-width:640px){ .ifc-row{flex-direction:column;gap:4px} .ifc-row-label{padding-top:0} }
   .ifc-chip { display:inline-flex; align-items:center; gap:6px; padding:7px 14px; border-radius:999px; border:1px solid var(--border); background:#fff; color:var(--txt-secondary); font:500 13px 'Montserrat',system-ui,sans-serif; cursor:pointer; transition:all .15s; }
   .ifc-chip span { font-size:11px; font-weight:700; opacity:.7; }
   .ifc-chip:hover { border-color:var(--prim-500); color:var(--prim-600); }
@@ -56,18 +80,23 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 </style>
 
 <script>
-  const chips = document.querySelectorAll<HTMLElement>('.ifc-chip');
   const cards = document.querySelectorAll<HTMLElement>('.ifc-card');
-  function applyFilter(f: string) {
-    chips.forEach(c => c.classList.toggle('active', c.dataset.filter === f));
+  const state: Record<string, string> = { section: 'all', kind: 'all' };
+  function applyFilter() {
+    document.querySelectorAll<HTMLElement>('.ifc-filters').forEach(g => {
+      g.querySelectorAll<HTMLElement>('.ifc-chip').forEach(c => c.classList.toggle('active', c.dataset.filter === state[g.dataset.group!]));
+    });
     let n = 0;
     cards.forEach(card => {
-      const show = f === 'all' || card.dataset.section === f;
+      const show = (state.section === 'all' || card.dataset.section === state.section) && (state.kind === 'all' || card.dataset.kind === state.kind);
       card.hidden = !show;
       if (show) { n++; const num = card.querySelector('.ifc-n'); if (num) num.textContent = String(n).padStart(2, '0'); }
     });
+    const empty = document.getElementById('ifc-empty'); if (empty) empty.hidden = n > 0;
   }
-  chips.forEach(c => c.addEventListener('click', () => applyFilter(c.dataset.filter!)));
+  document.querySelectorAll<HTMLElement>('.ifc-filters').forEach(g => {
+    g.querySelectorAll<HTMLElement>('.ifc-chip').forEach(c => c.addEventListener('click', () => { state[g.dataset.group!] = c.dataset.filter!; applyFilter(); }));
+  });
   const dlg = document.getElementById('ifc-dialog') as HTMLDialogElement;
   const big = document.getElementById('ifc-big') as HTMLImageElement;
   const cap = document.getElementById('ifc-cap') as HTMLElement;
