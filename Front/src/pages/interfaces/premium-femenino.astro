@@ -1,0 +1,16 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ScreenGallery from '../../components/ScreenGallery.astro';
+import { interfaces } from '../../data/interfaces.js';
+
+const subNav = [
+  { label: 'Gratuito oscuro',   href: '/interfaces/free-dark',         id: 'free-dark' },
+  { label: 'Gratuito claro',    href: '/interfaces/free-light',        id: 'free-light' },
+  { label: 'Premium masculino', href: '/interfaces/premium-masculino', id: 'premium-masculino' },
+  { label: 'Premium femenino',  href: '/interfaces/premium-femenino',  id: 'premium-femenino' },
+];
+const items = interfaces['premium-femenino'];
+---
+<Layout title="Premium · femenino" section="interfaces" subNav={subNav} pageTitle="Premium · femenino" pageDesc="Pantallas de la versión Premium femenina. Haz clic en una pantalla para ampliarla.">
+  <ScreenGallery items={items} folder="premium-femenino" />
+</Layout>

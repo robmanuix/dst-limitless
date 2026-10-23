@@ -57,8 +57,12 @@ Front/src/
       inputs.astro              # Radio, Chip, Slider
       chips-badges.astro        # Chip Eje, Chip Lives, Badge Premium, Badge Notificación
       notifications.astro       # 6 tipos
+    interfaces/                 # Galerías de pantallas por versión de UI
+      free-dark.astro  free-light.astro  premium-masculino.astro  premium-femenino.astro
     support.astro
 ```
+
+**Interfaces:** datos en `src/data/interfaces.js`, componente `components/ScreenGallery.astro` (grid + lightbox). Imágenes webp en `public/interfaces/<versión>/NN-slug.webp`. Gratuito claro muestra placeholders hasta que se copien capturas con el mismo nombre que las de `free-dark` en `public/interfaces/free-light/`.
 
 ### `Layout.astro` — archivo central
 

@@ -1,0 +1,16 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ScreenGallery from '../../components/ScreenGallery.astro';
+import { interfaces } from '../../data/interfaces.js';
+
+const subNav = [
+  { label: 'Gratuito oscuro',   href: '/interfaces/free-dark',         id: 'free-dark' },
+  { label: 'Gratuito claro',    href: '/interfaces/free-light',        id: 'free-light' },
+  { label: 'Premium masculino', href: '/interfaces/premium-masculino', id: 'premium-masculino' },
+  { label: 'Premium femenino',  href: '/interfaces/premium-femenino',  id: 'premium-femenino' },
+];
+const items = interfaces['free-dark'];
+---
+<Layout title="Gratuito · modo claro" section="interfaces" subNav={subNav} pageTitle="Gratuito · modo claro" pageDesc="Capturas pendientes de la versión Gratuita en modo claro; se mostrarán al agregar los archivos en public/interfaces/free-light/.">
+  <ScreenGallery items={items} folder="free-light" pending />
+</Layout>

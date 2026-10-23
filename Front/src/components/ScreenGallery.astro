@@ -1,0 +1,56 @@
+---
+const { items, folder, pending = false } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<div class="ifc-grid">
+  {items.map((it, i) => (
+    <figure class="ifc-card" data-title={it.title}>
+      <button class="ifc-thumb" type="button" aria-label={`Ampliar ${it.title}`}>
+        {pending && <div class="ifc-ph"><span>Captura pendiente</span><small>{it.file}</small></div>}
+        <img src={`${base}/interfaces/${folder}/${it.file}`} alt={it.title} loading="lazy"
+          onerror={pending ? "this.remove()" : undefined} />
+      </button>
+      <figcaption><span class="ifc-n">{String(i + 1).padStart(2, '0')}</span>{it.title}</figcaption>
+    </figure>
+  ))}
+</div>
+<dialog id="ifc-dialog" class="ifc-dialog">
+  <button type="button" class="ifc-close" aria-label="Cerrar">×</button>
+  <img id="ifc-big" alt="" />
+  <p id="ifc-cap"></p>
+</dialog>
+
+<style is:global>
+  .ifc-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:24px; align-items:start; }
+  .ifc-card { margin:0; }
+  .ifc-thumb { display:block; width:100%; padding:0; border:1px solid var(--border); border-radius:16px; overflow:hidden; background:var(--surface-base); cursor:zoom-in; position:relative; transition:box-shadow .15s, transform .15s; }
+  .ifc-thumb:hover { box-shadow:0 8px 24px rgba(101,48,36,.18); transform:translateY(-2px); }
+  .ifc-thumb img { display:block; width:100%; height:auto; }
+  .ifc-ph { aspect-ratio:393/852; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; background:repeating-linear-gradient(45deg,#faf3ee,#faf3ee 10px,#f5e9e1 10px,#f5e9e1 20px); color:var(--prim-600); font-weight:600; font-size:13px; text-align:center; padding:12px; }
+  .ifc-ph small { font-weight:400; font-size:11px; color:var(--txt-secondary); word-break:break-all; }
+  .ifc-thumb img + .ifc-ph, .ifc-ph + img { position:absolute; inset:0; height:100%; object-fit:cover; }
+  .ifc-card figcaption { margin-top:8px; font-size:13px; font-weight:500; color:var(--txt-primary); display:flex; gap:8px; align-items:baseline; }
+  .ifc-n { font-size:11px; font-weight:700; color:var(--prim-600); }
+  .ifc-dialog { margin:auto; border:none; border-radius:16px; padding:16px; background:#fff; max-width:min(92vw,520px); max-height:94vh; overflow:auto; text-align:center; }
+  .ifc-dialog::backdrop { background:rgba(20,8,5,.7); }
+  .ifc-dialog img { max-width:100%; height:auto; display:block; margin:0 auto; border-radius:12px; }
+  .ifc-dialog p { margin:10px 0 0; font-size:13px; font-weight:600; color:var(--prim-700); }
+  .ifc-close { position:absolute; top:6px; right:10px; border:none; background:none; font-size:26px; line-height:1; cursor:pointer; color:var(--txt-secondary); z-index:2; }
+</style>
+
+<script>
+  const dlg = document.getElementById('ifc-dialog') as HTMLDialogElement;
+  const big = document.getElementById('ifc-big') as HTMLImageElement;
+  const cap = document.getElementById('ifc-cap') as HTMLElement;
+  document.querySelectorAll('.ifc-card').forEach(card => {
+    card.querySelector('.ifc-thumb')!.addEventListener('click', () => {
+      const img = card.querySelector('img');
+      if (!img) return;
+      big.src = img.src; big.alt = img.alt;
+      cap.textContent = (card as HTMLElement).dataset.title ?? '';
+      dlg.showModal();
+    });
+  });
+  dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
+  dlg.querySelector('.ifc-close')!.addEventListener('click', () => dlg.close());
+</script>
